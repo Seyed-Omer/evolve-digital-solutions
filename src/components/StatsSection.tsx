@@ -5,6 +5,7 @@ const stats = [
   { value: 120, suffix: "+", label: "Projects Completed" },
   { value: 60, suffix: "+", label: "Clients Served" },
   { value: 500, suffix: "+", label: "Students Trained" },
+  { value: 5, suffix: "+", label: "Years Experience" },
 ];
 
 const Counter = ({ target, suffix }: { target: number; suffix: string }) => {
@@ -15,7 +16,7 @@ const Counter = ({ target, suffix }: { target: number; suffix: string }) => {
   useEffect(() => {
     if (!inView) return;
     let start = 0;
-    const duration = 2000;
+    const duration = 1800;
     const step = Math.ceil(target / (duration / 16));
     const interval = setInterval(() => {
       start += step;
@@ -38,26 +39,31 @@ const Counter = ({ target, suffix }: { target: number; suffix: string }) => {
 
 const StatsSection = () => {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <section className="py-20 gradient-navy relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-1/4 w-64 h-64 rounded-full bg-electric blur-[100px]" />
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 rounded-full bg-gold blur-[100px]" />
+    <section className="py-14 md:py-16 gradient-navy relative overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-1/4 w-48 h-48 rounded-full bg-electric opacity-[0.08] blur-[80px]" />
+        <div className="absolute bottom-0 right-1/4 w-48 h-48 rounded-full bg-gold opacity-[0.06] blur-[80px]" />
       </div>
       <div className="container mx-auto px-4 md:px-8 relative z-10" ref={ref}>
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="grid md:grid-cols-3 gap-12 text-center"
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
         >
-          {stats.map((stat) => (
-            <div key={stat.label}>
+          {stats.map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 15 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
+            >
               <Counter target={stat.value} suffix={stat.suffix} />
-              <p className="text-primary-foreground/70 mt-2 text-lg">{stat.label}</p>
-            </div>
+              <p className="text-primary-foreground/60 mt-1 text-sm">{stat.label}</p>
+            </motion.div>
           ))}
         </motion.div>
       </div>

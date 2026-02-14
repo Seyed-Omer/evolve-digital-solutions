@@ -8,37 +8,28 @@
   :root {
     --background: 220 20% 97%;
     --foreground: 222 47% 11%;
-
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-
     --primary: 220 60% 15%;
     --primary-foreground: 210 40% 98%;
-
     --secondary: 215 25% 90%;
     --secondary-foreground: 222 47% 11%;
-
     --muted: 215 20% 94%;
     --muted-foreground: 215 16% 47%;
-
     --accent: 210 100% 52%;
     --accent-foreground: 0 0% 100%;
-
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 210 100% 52%;
-
     --radius: 0.75rem;
 
-    /* Custom tokens */
     --navy: 220 60% 15%;
     --navy-light: 220 45% 22%;
+    --navy-deep: 220 65% 10%;
     --electric: 210 100% 52%;
     --electric-light: 200 100% 62%;
     --gold: 40 95% 55%;
@@ -106,6 +97,10 @@
     background: linear-gradient(135deg, hsl(var(--navy)) 0%, hsl(var(--navy-light)) 100%);
   }
 
+  .gradient-navy-deep {
+    background: linear-gradient(160deg, hsl(var(--navy-deep)) 0%, hsl(var(--navy)) 40%, hsl(var(--navy-light)) 100%);
+  }
+
   .gradient-electric {
     background: linear-gradient(135deg, hsl(var(--electric)) 0%, hsl(var(--electric-light)) 100%);
   }
@@ -115,7 +110,7 @@
   }
 
   .gradient-hero {
-    background: linear-gradient(160deg, hsl(220 60% 12%) 0%, hsl(220 50% 20%) 50%, hsl(210 60% 25%) 100%);
+    background: linear-gradient(160deg, hsl(220 65% 10%) 0%, hsl(220 55% 18%) 40%, hsl(210 50% 22%) 70%, hsl(210 60% 25%) 100%);
   }
 
   .gradient-text {
@@ -145,17 +140,44 @@
   }
 
   .card-hover:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 60px hsl(220 60% 15% / 0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px hsl(220 60% 15% / 0.12), 0 8px 24px hsl(210 100% 52% / 0.08);
   }
 
   .section-padding {
+    @apply py-16 md:py-20 px-4 md:px-8;
+  }
+
+  .section-padding-lg {
     @apply py-20 md:py-28 px-4 md:px-8;
   }
 
   .nav-scrolled {
     @apply shadow-lg backdrop-blur-xl;
-    background: hsl(0 0% 100% / 0.95);
+    background: hsl(0 0% 100% / 0.97);
+  }
+
+  /* Tech marquee */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-marquee {
+    animation: marquee 25s linear infinite;
+  }
+
+  /* Subtle background shapes */
+  .bg-dots {
+    background-image: radial-gradient(hsl(var(--electric) / 0.07) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 60px 60px;
   }
 }
 
