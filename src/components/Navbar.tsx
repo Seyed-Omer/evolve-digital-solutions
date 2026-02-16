@@ -90,14 +90,15 @@ const Navbar = () => {
                 scrolled ? "text-foreground" : "text-primary-foreground/80"
               }`}
             >
-              Services <ChevronDown className="w-3.5 h-3.5" />
+              Services <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${servicesOpen ? "rotate-180" : ""}`} />
             </button>
             <AnimatePresence>
               {servicesOpen && (
                 <motion.div
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 5 }}
+                  initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
                   className="absolute top-full left-0 mt-2 w-56 bg-card border border-border rounded-xl shadow-xl py-2 z-50"
                 >
                   {serviceLinks.map((s) => (
@@ -115,6 +116,8 @@ const Navbar = () => {
           </div>
 
           {[
+            { label: "Consulting", href: "/consulting" },
+            { label: "Blog", href: "/blog" },
             { label: "Careers", href: "#careers" },
             { label: "Contact", href: "#contact" },
           ].map((link) => (
@@ -129,12 +132,14 @@ const Navbar = () => {
             </button>
           ))}
 
-          <button
+          <motion.button
             onClick={() => scrollTo("#contact")}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
             className="gradient-electric text-accent-foreground px-5 py-2 rounded-full font-semibold text-sm transition-all hover:opacity-90 hover:shadow-lg"
           >
             Get In Touch ↗
-          </button>
+          </motion.button>
         </div>
 
         {/* Mobile toggle */}
@@ -157,13 +162,21 @@ const Navbar = () => {
             className="lg:hidden bg-card border-b border-border"
           >
             <div className="flex flex-col p-4 gap-2">
-              {["Home", "About", "Services", "Careers", "Contact"].map((link) => (
+              {[
+                { label: "Home", href: "/" },
+                { label: "About", href: "/about" },
+                { label: "Services", href: "#services" },
+                { label: "Consulting", href: "/consulting" },
+                { label: "Blog", href: "/blog" },
+                { label: "Careers", href: "#careers" },
+                { label: "Contact", href: "#contact" },
+              ].map((link) => (
                 <button
-                  key={link}
-                  onClick={() => scrollTo(link === "Home" ? "/" : link === "About" ? "/about" : `#${link.toLowerCase()}`)}
+                  key={link.label}
+                  onClick={() => scrollTo(link.href)}
                   className="text-foreground font-medium py-2 text-left hover:text-electric transition-colors"
                 >
-                  {link}
+                  {link.label}
                 </button>
               ))}
               <button

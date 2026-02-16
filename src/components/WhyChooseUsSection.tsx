@@ -25,6 +25,14 @@ const reasons = [
   },
 ];
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 40, rotateX: 10 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0, rotateX: 0,
+    transition: { duration: 0.6, delay: i * 0.12, type: "spring" as const, stiffness: 80 },
+  }),
+};
+
 const WhyChooseUsSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
@@ -39,7 +47,14 @@ const WhyChooseUsSection = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <span className="gradient-text font-semibold text-sm tracking-widest uppercase">Why Us</span>
+          <motion.span
+            className="gradient-text font-semibold text-sm tracking-widest uppercase"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            Why Us
+          </motion.span>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-3">Why Choose Us</h2>
         </motion.div>
 
@@ -47,15 +62,21 @@ const WhyChooseUsSection = () => {
           {reasons.map((r, i) => (
             <motion.div
               key={r.title}
-              initial={{ opacity: 0, y: 25 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.45, delay: i * 0.1 }}
-              className="bg-card border border-border rounded-xl p-6 card-hover text-center group"
+              custom={i}
+              initial="hidden"
+              animate={inView ? "visible" : "hidden"}
+              variants={cardVariants}
+              whileHover={{ y: -10, scale: 1.04, transition: { duration: 0.3 } }}
+              className="bg-card border border-border rounded-xl p-6 text-center group cursor-pointer"
             >
-              <div className="w-14 h-14 rounded-xl gradient-electric flex items-center justify-center mx-auto mb-4 group-hover:glow-electric transition-all">
+              <motion.div
+                className="w-14 h-14 rounded-xl gradient-electric flex items-center justify-center mx-auto mb-4"
+                whileHover={{ rotate: 10, scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 200 }}
+              >
                 <r.icon className="w-7 h-7 text-accent-foreground" />
-              </div>
-              <h3 className="font-heading font-bold text-foreground text-base mb-2">{r.title}</h3>
+              </motion.div>
+              <h3 className="font-heading font-bold text-foreground text-base mb-2 group-hover:text-electric transition-colors">{r.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{r.description}</p>
             </motion.div>
           ))}
