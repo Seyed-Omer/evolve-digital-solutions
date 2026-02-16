@@ -3,36 +3,12 @@ import { useRef } from "react";
 import { Quote } from "lucide-react";
 
 const testimonials = [
-  {
-    quote: "Evolve helped us turn our product vision into reality with professionalism and speed.",
-    name: "Ravi Kumar",
-    role: "CTO at FinNova",
-  },
-  {
-    quote: "Their engineering depth and creative UI team were game changers for us.",
-    name: "Priya Mehta",
-    role: "CEO at MedSync",
-  },
-  {
-    quote: "Impressive agility, smart problem-solvers. We found a real partner in Evolve.",
-    name: "Arjun Desai",
-    role: "VP Product at EduNow",
-  },
-  {
-    quote: "Evolve helped us turn our product vision into reality with professionalism and speed.",
-    name: "Ravi Kumar",
-    role: "CTO at FinNova",
-  },
-  {
-    quote: "Their engineering depth and creative UI team were game changers for us.",
-    name: "Priya Mehta",
-    role: "CEO at MedSync",
-  },
-  {
-    quote: "Impressive agility, smart problem-solvers. We found a real partner in Evolve.",
-    name: "Arjun Desai",
-    role: "VP Product at EduNow",
-  },
+  { quote: "Evolve helped us turn our product vision into reality with professionalism and speed.", name: "Ravi Kumar", role: "CTO at FinNova" },
+  { quote: "Their engineering depth and creative UI team were game changers for us.", name: "Priya Mehta", role: "CEO at MedSync" },
+  { quote: "Impressive agility, smart problem-solvers. We found a real partner in Evolve.", name: "Arjun Desai", role: "VP Product at EduNow" },
+  { quote: "Evolve helped us turn our product vision into reality with professionalism and speed.", name: "Ravi Kumar", role: "CTO at FinNova" },
+  { quote: "Their engineering depth and creative UI team were game changers for us.", name: "Priya Mehta", role: "CEO at MedSync" },
+  { quote: "Impressive agility, smart problem-solvers. We found a real partner in Evolve.", name: "Arjun Desai", role: "VP Product at EduNow" },
 ];
 
 const TestimonialsSection = () => {
@@ -42,7 +18,11 @@ const TestimonialsSection = () => {
   return (
     <section className="py-16 md:py-20 gradient-navy-deep relative overflow-hidden">
       <div className="absolute inset-0">
-        <div className="absolute top-10 left-1/3 w-64 h-64 rounded-full bg-electric opacity-[0.04] blur-[120px]" />
+        <motion.div
+          animate={{ x: [0, 40, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-10 left-1/3 w-64 h-64 rounded-full bg-electric opacity-[0.04] blur-[120px]"
+        />
       </div>
       <div className="container mx-auto px-4 md:px-8 relative z-10" ref={ref}>
         <div className="relative overflow-hidden">
@@ -52,12 +32,15 @@ const TestimonialsSection = () => {
             {[...testimonials, ...testimonials].map((t, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0 }}
-                animate={inView ? { opacity: 1 } : {}}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={inView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.5, delay: i * 0.05 }}
-                className="inline-flex flex-col mx-4 p-6 rounded-xl border border-primary-foreground/10 bg-primary-foreground/5 backdrop-blur-sm min-w-[320px] max-w-[360px] whitespace-normal shrink-0"
+                whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+                className="inline-flex flex-col mx-4 p-6 rounded-xl border border-primary-foreground/10 bg-primary-foreground/5 backdrop-blur-sm min-w-[320px] max-w-[360px] whitespace-normal shrink-0 group"
               >
-                <Quote className="w-5 h-5 text-electric mb-3 opacity-60" />
+                <motion.div whileHover={{ rotate: 10 }}>
+                  <Quote className="w-5 h-5 text-electric mb-3 opacity-60 group-hover:opacity-100 transition-opacity" />
+                </motion.div>
                 <p className="text-primary-foreground/80 text-sm leading-relaxed mb-4 italic">
                   "{t.quote}"
                 </p>

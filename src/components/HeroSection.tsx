@@ -31,14 +31,36 @@ const Counter = ({ target }: { target: string }) => {
   return <span ref={ref}>{count}{suffix}</span>;
 };
 
+const letterVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { duration: 0.4, delay: 0.3 + i * 0.03, ease: "easeOut" as const },
+  }),
+};
+
 const HeroSection = () => {
+  const headlineWords = "Evolving Ideas Into".split(" ");
+
   return (
     <section id="home" className="relative min-h-screen flex flex-col gradient-hero overflow-hidden">
-      {/* Background shapes */}
+      {/* Animated background shapes */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-electric opacity-[0.06] blur-[120px]" />
-        <div className="absolute bottom-40 right-10 w-96 h-96 rounded-full bg-electric-light opacity-[0.08] blur-[150px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-electric opacity-[0.03] blur-[200px]" />
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.06, 0.1, 0.06] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-20 left-10 w-72 h-72 rounded-full bg-electric blur-[120px]"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.15, 1], opacity: [0.08, 0.12, 0.08] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute bottom-40 right-10 w-96 h-96 rounded-full bg-electric-light blur-[150px]"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-electric opacity-[0.03] blur-[200px]"
+        />
       </div>
 
       {/* Main content */}
@@ -52,34 +74,52 @@ const HeroSection = () => {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="flex items-center gap-3 mb-5"
             >
-              <div className="h-px w-16 bg-electric" />
+              <motion.div
+                className="h-px bg-electric"
+                initial={{ width: 0 }}
+                animate={{ width: 64 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              />
               <motion.span
                 className="text-electric font-mono text-sm tracking-[0.3em] uppercase"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, letterSpacing: "0.1em" }}
+                animate={{ opacity: 1, letterSpacing: "0.3em" }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
                 REDEFINING
               </motion.span>
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-primary-foreground leading-[1.15] mb-5"
-            >
-              Evolving Ideas Into{" "}
+            <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-primary-foreground leading-[1.15] mb-5">
+              {headlineWords.map((word, i) => (
+                <motion.span
+                  key={i}
+                  custom={i}
+                  initial="hidden"
+                  animate="visible"
+                  variants={letterVariants}
+                  className="inline-block mr-3"
+                >
+                  {word}
+                </motion.span>
+              ))}{" "}
               <motion.span
-                className="gradient-text"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
+                className="gradient-text inline-block"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.6, type: "spring", stiffness: 100 }}
               >
                 Powerful Digital
               </motion.span>{" "}
-              Solutions
-            </motion.h1>
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
+                Solutions
+              </motion.span>
+            </h1>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -97,7 +137,17 @@ const HeroSection = () => {
               transition={{ duration: 0.5, delay: 0.65 }}
               className="text-electric font-semibold text-sm tracking-wide mb-8"
             >
-              Experience | Expertise | Excellence
+              {["Experience", "Expertise", "Excellence"].map((word, i) => (
+                <motion.span
+                  key={word}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.7 + i * 0.15 }}
+                  className="inline-block"
+                >
+                  {word}{i < 2 ? <span className="mx-2 text-primary-foreground/30">|</span> : ""}
+                </motion.span>
+              ))}
             </motion.p>
 
             <motion.div
@@ -106,41 +156,62 @@ const HeroSection = () => {
               transition={{ duration: 0.5, delay: 0.7 }}
               className="flex flex-wrap gap-4"
             >
-              <a
+              <motion.a
                 href="#contact"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
                 className="gradient-electric text-accent-foreground px-8 py-3.5 rounded-lg font-semibold text-base transition-all hover:opacity-90 glow-electric animate-pulse-glow"
               >
                 Get Started
-              </a>
-              <a
+              </motion.a>
+              <motion.a
                 href="#services"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
                 className="border border-primary-foreground/20 text-primary-foreground px-8 py-3.5 rounded-lg font-semibold text-base transition-all hover:bg-primary-foreground/10"
               >
                 Our Services
-              </a>
+              </motion.a>
             </motion.div>
           </div>
 
-          {/* Image with subtle float */}
+          {/* Image with subtle float + parallax */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            initial={{ opacity: 0, scale: 0.85, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 1, delay: 0.4, type: "spring", stiffness: 60 }}
             className="relative hidden lg:block"
           >
-            <div className="animate-float-slow">
+            <motion.div
+              animate={{ y: [0, -12, 0], rotate: [0, 1, 0] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+            >
               <img
                 src={heroImage}
                 alt="Futuristic digital workspace"
                 className="rounded-2xl shadow-2xl w-full"
               />
-              <div className="absolute inset-0 rounded-2xl ring-1 ring-electric/20" />
-            </div>
+              <motion.div
+                className="absolute inset-0 rounded-2xl ring-1 ring-electric/20"
+                animate={{ opacity: [0.2, 0.5, 0.2] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </motion.div>
+            {/* Floating badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 1.2, type: "spring" }}
+              className="absolute -bottom-4 -left-4 bg-card/90 backdrop-blur-sm rounded-xl p-4 shadow-xl border border-border"
+            >
+              <div className="text-2xl font-heading font-bold gradient-text">120+</div>
+              <p className="text-muted-foreground text-xs">Projects Delivered</p>
+            </motion.div>
           </motion.div>
         </div>
       </div>
 
-      {/* Bottom stats bar - like reference */}
+      {/* Bottom stats bar */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -150,7 +221,13 @@ const HeroSection = () => {
         <div className="container mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-primary-foreground/10">
             {heroStats.map((stat, i) => (
-              <div key={i} className="py-6 md:py-8 px-6 text-center md:text-left">
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 + i * 0.15 }}
+                className="py-6 md:py-8 px-6 text-center md:text-left"
+              >
                 {stat.subtitle && (
                   <p className="text-primary-foreground/50 text-xs leading-snug mb-1 whitespace-pre-line">
                     {stat.subtitle}
@@ -166,7 +243,7 @@ const HeroSection = () => {
                 ) : (
                   <p className="text-xl font-heading font-bold text-electric">{stat.label}</p>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
